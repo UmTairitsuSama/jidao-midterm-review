@@ -1,0 +1,571 @@
+{
+  "problems": [
+    {
+      "id": "A01",
+      "cat": "basic",
+      "title": "两数之和与差的计算",
+      "difficulty": 1,
+      "tags": [
+        "输入输出",
+        "算术运算"
+      ],
+      "source": "PTA 7-1（实验1_1）",
+      "desc": "### 题目描述\n\n从键盘读入两个整数 a 和 b，计算它们的和与差并输出：和为 `a + b`，差为 `a - b`。\n\n### 输入格式\n\n一行，两个整数 a 和 b，用空格分隔。题目保证这两个整数以及它们的和、差都可以用 `int` 类型存储。\n\n### 输出格式\n\n只有一行，格式为 `The sum is x and the difference is y.`，其中 x 为两数之和、y 为两数之差。注意句子中的空格、标点以及句末的英文句点都要与格式完全一致。",
+      "samples": [
+        {
+          "in": "1 2\n",
+          "out": "The sum is 3 and the difference is -1.\n"
+        },
+        {
+          "in": "-100 250\n",
+          "out": "The sum is 150 and the difference is -350.\n"
+        }
+      ],
+      "hint": "用 `scanf(\"%d%d\", &a, &b)` 读入两个整数，再用 `printf` 按题目给出的格式输出 `a + b` 和 `a - b`。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    int a, b;\n\n    scanf(\"%d%d\", &a, &b);\n    printf(\"The sum is %d and the difference is %d.\\n\", a + b, a - b);\n    return 0;\n}\n",
+      "pitfalls": "输出句子的标点和句末句点是格式的一部分；差是「第一个数减第二个数」，不要写反。"
+    },
+    {
+      "id": "A02",
+      "cat": "basic",
+      "title": "性别、年龄与身高的格式化输出",
+      "difficulty": 1,
+      "tags": [
+        "字符型",
+        "格式化输出",
+        "基本类型"
+      ],
+      "source": "PTA 7-2（实验1_2）",
+      "desc": "### 题目描述\n\n编写程序，依次读入某学生的性别、年龄和身高，并按规定格式输出。要求：性别用 `char` 型变量存储，年龄用 `int` 型变量存储，身高（单位：米）用 `float` 型变量存储。\n\n### 输入格式\n\n共三行：第一行为一个字符 `M` 或 `F`，表示性别；第二行为一个整数，表示年龄（1 ≤ 年龄 ≤ 150）；第三行为一个浮点数，表示身高（单位：米，0.5 ≤ 身高 ≤ 2.5）。测试用例保证输入合法。\n\n### 输出格式\n\n只有一行，格式为 `The sex is S, the age is A, and the height is H.`，其中 S 为性别字符（`M` 或 `F`），A 为年龄整数，H 为身高按 `%f` 的默认精度（6 位小数）输出的结果，句末有英文句点。",
+      "samples": [
+        {
+          "in": "M\n18\n1.66\n",
+          "out": "The sex is M, the age is 18, and the height is 1.660000.\n"
+        },
+        {
+          "in": "F\n20\n1.5\n",
+          "out": "The sex is F, the age is 20, and the height is 1.500000.\n"
+        }
+      ],
+      "hint": "性别用 `char` 和 `%c`，年龄用 `int` 和 `%d`，身高用 `float` 和 `%f`；`%f` 默认输出 6 位小数。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    char sex;\n    int age;\n    float height;\n\n    scanf(\" %c\", &sex);\n    scanf(\"%d\", &age);\n    scanf(\"%f\", &height);\n    printf(\"The sex is %c, the age is %d, and the height is %f.\\n\",\n           sex, age, height);\n    return 0;\n}\n",
+      "pitfalls": "身高必须用 `float` 型（题目要求），输入格式符是 `%f`；`%c` 不会跳过空白字符，写成 `\" %c\"` 更稳妥。"
+    },
+    {
+      "id": "A03",
+      "cat": "basic",
+      "title": "四则运算表达式的求值",
+      "difficulty": 2,
+      "tags": [
+        "浮点运算",
+        "double",
+        "表达式"
+      ],
+      "source": "PTA 7-3（实验1_3）",
+      "desc": "### 题目描述\n\n已知四则算式 `(a + b) * (a - b) + c / d`。从键盘输入四个浮点数，按输入顺序依次存入双精度浮点型（`double` 型）变量 a、b、c、d，计算该算式的值并输出。\n\n### 输入格式\n\n一行，四个浮点数，用空格分隔，依次代表 a、b、c、d（|a|、|b|、|c|、|d| ≤ 1000）。测试用例保证 d 不为 0。\n\n### 输出格式\n\n只有一行，为该算式的结果，按 `%f` 的默认精度输出（保留 6 位小数）。",
+      "samples": [
+        {
+          "in": "1.5 2.0 10.00 5.0\n",
+          "out": "0.250000\n"
+        },
+        {
+          "in": "3 4 1 2\n",
+          "out": "-6.500000\n"
+        }
+      ],
+      "hint": "四个数都用 `double` 存储，输入用 `%lf`；按运算优先级直接用一条表达式计算即可。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    double a, b, c, d, result;\n\n    scanf(\"%lf%lf%lf%lf\", &a, &b, &c, &d);\n    result = (a + b) * (a - b) + c / d;\n    printf(\"%f\\n\", result);\n    return 0;\n}\n",
+      "pitfalls": "操作数是浮点数，必须用 `%lf` 读入；用 `int` 读入会丢掉小数部分。"
+    },
+    {
+      "id": "A04",
+      "cat": "basic",
+      "title": "圆的周长与面积",
+      "difficulty": 2,
+      "tags": [
+        "符号常量",
+        "浮点运算",
+        "格式控制"
+      ],
+      "source": "PTA 7-4（实验1_4）",
+      "desc": "### 题目描述\n\n已知圆的半径 R（浮点数），求该圆的周长和面积并输出。要求半径、周长、面积都用 `double` 型变量存储，并在程序中用符号常量 `PI` 表示 π 值 3.14159265。圆的周长公式为 2 × π × R，面积公式为 π × R × R。\n\n### 输入格式\n\n一行，一个正的浮点数 R（0 < R ≤ 1000），表示圆的半径。测试用例保证输入合法。\n\n### 输出格式\n\n只有一行，格式为 `The perimeter is P, the area is A.`，其中 P、A 分别为周长和面积，均保留 4 位小数，句末有英文句点。",
+      "samples": [
+        {
+          "in": "5.5\n",
+          "out": "The perimeter is 34.5575, the area is 95.0332.\n"
+        },
+        {
+          "in": "1\n",
+          "out": "The perimeter is 6.2832, the area is 3.1416.\n"
+        }
+      ],
+      "hint": "用 `#define PI 3.14159265` 定义符号常量，输出用 `%.4f`（`double` 也可以写 `%.4lf`）。",
+      "solution": "#include <stdio.h>\n\n#define PI 3.14159265\n\nint main(void)\n{\n    double r, perimeter, area;\n\n    scanf(\"%lf\", &r);\n    perimeter = 2.0 * PI * r;\n    area = PI * r * r;\n    printf(\"The perimeter is %.4f, the area is %.4f.\\n\", perimeter, area);\n    return 0;\n}\n",
+      "pitfalls": "周长是 `2 * PI * R`，面积是 `PI * R * R`，两者不要写混；结果保留 4 位小数。"
+    },
+    {
+      "id": "A05",
+      "cat": "basic",
+      "title": "三位整数的拆位与逆序",
+      "difficulty": 2,
+      "tags": [
+        "整除取余",
+        "数字拆分"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n\n输入一个三位正整数 n，请分解出它的百位、十位和个位数字，然后输出这些数字之和以及 n 的「逆序数」。逆序数按整数输出，前导零不输出（例如 120 的逆序数是 21）。\n\n### 输入格式\n\n一行，一个三位正整数 n（100 ≤ n ≤ 999）。\n\n### 输出格式\n\n一行，两个整数，用一个空格分隔：第一个是 n 的各位数字之和，第二个是 n 的逆序数。",
+      "samples": [
+        {
+          "in": "123\n",
+          "out": "6 321\n"
+        },
+        {
+          "in": "120\n",
+          "out": "3 21\n"
+        },
+        {
+          "in": "999\n",
+          "out": "27 999\n"
+        }
+      ],
+      "hint": "百位是 `n / 100`，十位是 `n / 10 % 10`，个位是 `n % 10`；逆序数用 `个位 * 100 + 十位 * 10 + 百位` 计算。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    int n, hundreds, tens, units;\n\n    scanf(\"%d\", &n);\n    hundreds = n / 100;\n    tens = n / 10 % 10;\n    units = n % 10;\n    printf(\"%d %d\\n\", hundreds + tens + units,\n           units * 100 + tens * 10 + hundreds);\n    return 0;\n}\n",
+      "pitfalls": "个位是 0 时逆序数会有前导零（如 120 → 21），直接按整数计算即可自动去掉；`/` 和 `%` 优先级相同，注意从左到右计算。"
+    },
+    {
+      "id": "A06",
+      "cat": "basic",
+      "title": "网购订单的运费计算",
+      "difficulty": 2,
+      "tags": [
+        "多分支",
+        "分段计费"
+      ],
+      "source": "PTA 7-9（实验2_4）",
+      "desc": "### 题目描述\n\n某电商规定订单的快递费按商品总价收取：总价小于 20 元时收 10 元；总价大于等于 20 元且小于 30 元时收 8 元；总价大于等于 30 元且小于 40 元时收 5 元；总价大于等于 40 元时包邮（不收快递费）。现有一笔订单共 4 件商品，请计算顾客实际需要支付的钱数（商品总价加快递费）。\n\n### 输入格式\n\n一行，四个正整数，用空格分隔，表示 4 件商品的价格（1 ≤ 每件价格 ≤ 1000）。测试用例保证所有整数都可以用 `int` 型存储。\n\n### 输出格式\n\n只有一行，一个整数，表示顾客实际需要支付的金额。",
+      "samples": [
+        {
+          "in": "1 2 3 4\n",
+          "out": "20\n"
+        },
+        {
+          "in": "5 5 5 5\n",
+          "out": "28\n"
+        },
+        {
+          "in": "10 10 10 10\n",
+          "out": "40\n"
+        }
+      ],
+      "hint": "先把 4 件商品的价格求和，再按总价所在的区间累加运费，可以用 `if-else if` 链依次判断。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    int p1, p2, p3, p4, total, shipping;\n\n    scanf(\"%d%d%d%d\", &p1, &p2, &p3, &p4);\n    total = p1 + p2 + p3 + p4;\n    if (total < 20) {\n        shipping = 10;\n    } else if (total < 30) {\n        shipping = 8;\n    } else if (total < 40) {\n        shipping = 5;\n    } else {\n        shipping = 0;\n    }\n    printf(\"%d\\n\", total + shipping);\n    return 0;\n}\n",
+      "pitfalls": "总价区间是左闭右开：20 元属于 8 元档、30 元属于 5 元档、40 元包邮，不要把边界判错。"
+    },
+    {
+      "id": "A07",
+      "cat": "basic",
+      "title": "公历闰年判断",
+      "difficulty": 2,
+      "tags": [
+        "条件判断",
+        "闰年"
+      ],
+      "source": "PTA 7-7（实验2_2）",
+      "desc": "### 题目描述\n\n公历闰年的判断规则是：四年一闰；百年不闰，四百年再闰。即年份能被 4 整除且不能被 100 整除的为闰年，或者年份能被 400 整除的也是闰年。给定一个年份，请判断它是否为闰年。\n\n### 输入格式\n\n一行，一个整数 y（1900 ≤ y ≤ 2500），表示年份。\n\n### 输出格式\n\n只有一行：如果是闰年输出 `Yes`，否则输出 `No`。",
+      "samples": [
+        {
+          "in": "2008\n",
+          "out": "Yes\n"
+        },
+        {
+          "in": "1900\n",
+          "out": "No\n"
+        },
+        {
+          "in": "2000\n",
+          "out": "Yes\n"
+        }
+      ],
+      "hint": "闰年条件可以写成 `(y % 4 == 0 && y % 100 != 0) || y % 400 == 0`。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    int y;\n\n    scanf(\"%d\", &y);\n    if ((y % 4 == 0 && y % 100 != 0) || y % 400 == 0) {\n        printf(\"Yes\\n\");\n    } else {\n        printf(\"No\\n\");\n    }\n    return 0;\n}\n",
+      "pitfalls": "整百年份必须能被 400 整除才是闰年：1900 是平年，2000 是闰年。"
+    },
+    {
+      "id": "A08",
+      "cat": "basic",
+      "title": "字母的编码与大小写转换",
+      "difficulty": 2,
+      "tags": [
+        "字符型",
+        "ASCII码"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n\n在 C 语言中，字符型数据在内存中以其 ASCII 码（整数）的形式存放，大写字母和小写字母的 ASCII 码相差 32。输入一个大写英文字母，请输出它的 ASCII 码、对应的小写字母，以及它在英文字母表中的序号（`A` 为 1，`B` 为 2，……，`Z` 为 26）。\n\n### 输入格式\n\n一行，一个大写英文字母 c（`A` ≤ c ≤ `Z`）。\n\n### 输出格式\n\n一行，三个值，用一个空格分隔：第一项为 c 的 ASCII 码（整数），第二项为 c 对应的小写字母（字符），第三项为 c 在字母表中的序号（整数）。",
+      "samples": [
+        {
+          "in": "G\n",
+          "out": "71 g 7\n"
+        },
+        {
+          "in": "A\n",
+          "out": "65 a 1\n"
+        },
+        {
+          "in": "Z\n",
+          "out": "90 z 26\n"
+        }
+      ],
+      "hint": "字符在 C 中可以直接当整数用；大写转小写加 32（即 `c - 'A' + 'a'`），字母序号为 `c - 'A' + 1`。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    char c;\n\n    scanf(\" %c\", &c);\n    printf(\"%d %c %d\\n\", c, c - 'A' + 'a', c - 'A' + 1);\n    return 0;\n}\n",
+      "pitfalls": "输出三个值之间各用一个空格分隔；`%d` 和 `%c` 不要用混。"
+    },
+    {
+      "id": "A09",
+      "cat": "basic",
+      "title": "基本数据类型与所占字节数",
+      "difficulty": 3,
+      "tags": [
+        "数据类型",
+        "sizeof",
+        "格式化输出"
+      ],
+      "source": "PTA 7-5（实验1_5）",
+      "desc": "### 题目描述\n\nC 语言提供了丰富的基本数据类型。请分别定义以下 7 个变量（变量名依次为 a、b、c、d、e、f、g）：`char` 型、`short` 型、`int` 型、`long` 型、`long long` 型、`float` 型、`double` 型。按顺序读入这些数据并按原顺序输出，同时用 `sizeof` 运算符输出每个变量在当前系统中所占的字节数。\n\n### 输入格式\n\n共 7 行，每行对应一种类型的数据：第 1 行一个字符，第 2 行一个短整数，第 3 行一个整数，第 4 行一个长整数，第 5 行一个 `long long` 整数，第 6 行一个单精度浮点数，第 7 行一个双精度浮点数。数据均可用对应的类型存储。\n\n### 输出格式\n\n共 7 行，每行的格式形如 `The 'int' variable is V, it takes N bytes.`：先输出变量的值 V，再输出它所占的字节数 N，类型名用 ASCII 单引号括起。注意 `char` 一行用 `byte`（单数），其余各行用 `bytes`（复数）。\n\n### 样例说明\n\n`long` 占几个字节与编译器和平台有关。本题样例以 64 位 Windows + MinGW-w64 环境为准（`long` 占 4 字节）；在 64 位 Linux 上 `long` 占 8 字节，输出会相应变化。程序应当使用 `sizeof` 取得字节数，不要把数值写死。",
+      "samples": [
+        {
+          "in": "X\n1234\n2000000000\n2000000000\n500000000000000\n1.2345\n9.87654321\n",
+          "out": "The 'char' variable is X, it takes 1 byte.\nThe 'short' variable is 1234, it takes 2 bytes.\nThe 'int' variable is 2000000000, it takes 4 bytes.\nThe 'long' variable is 2000000000, it takes 4 bytes.\nThe 'long long' variable is 500000000000000, it takes 8 bytes.\nThe 'float' variable is 1.234500, it takes 4 bytes.\nThe 'double' variable is 9.876543, it takes 8 bytes.\n"
+        },
+        {
+          "in": "Q\n-32768\n-5\n12\n123456789012\n2.5\n3.14159265\n",
+          "out": "The 'char' variable is Q, it takes 1 byte.\nThe 'short' variable is -32768, it takes 2 bytes.\nThe 'int' variable is -5, it takes 4 bytes.\nThe 'long' variable is 12, it takes 4 bytes.\nThe 'long long' variable is 123456789012, it takes 8 bytes.\nThe 'float' variable is 2.500000, it takes 4 bytes.\nThe 'double' variable is 3.141593, it takes 8 bytes.\n"
+        }
+      ],
+      "hint": "按题目顺序定义 7 个变量并依次读入；用 `sizeof(变量)` 得到字节数，用 `%zu` 输出；注意各类型对应的 `scanf` 格式符（`%hd`、`%ld`、`%lld`、`%f`、`%lf`）。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    char a;\n    short b;\n    int c;\n    long d;\n    long long e;\n    float f;\n    double g;\n\n    scanf(\"%c\", &a);\n    scanf(\"%hd\", &b);\n    scanf(\"%d\", &c);\n    scanf(\"%ld\", &d);\n    scanf(\"%lld\", &e);\n    scanf(\"%f\", &f);\n    scanf(\"%lf\", &g);\n\n    printf(\"The 'char' variable is %c, it takes %zu byte.\\n\", a, sizeof(a));\n    printf(\"The 'short' variable is %hd, it takes %zu bytes.\\n\", b, sizeof(b));\n    printf(\"The 'int' variable is %d, it takes %zu bytes.\\n\", c, sizeof(c));\n    printf(\"The 'long' variable is %ld, it takes %zu bytes.\\n\", d, sizeof(d));\n    printf(\"The 'long long' variable is %lld, it takes %zu bytes.\\n\", e, sizeof(e));\n    printf(\"The 'float' variable is %f, it takes %zu bytes.\\n\", f, sizeof(f));\n    printf(\"The 'double' variable is %f, it takes %zu bytes.\\n\", g, sizeof(g));\n    return 0;\n}\n",
+      "pitfalls": "各类型的 `scanf` 格式符不能混用（`short` 用 `%hd`、`long` 用 `%ld`、`long long` 用 `%lld`）；`char` 行用 `byte`，其余行用 `bytes`；`long` 的字节数随平台变化，不要写死。"
+    },
+    {
+      "id": "A10",
+      "cat": "basic",
+      "title": "三角形面积（海伦公式）",
+      "difficulty": 3,
+      "tags": [
+        "数学函数",
+        "条件判断",
+        "浮点运算"
+      ],
+      "source": "PTA 7-10（实验2_5）",
+      "desc": "### 题目描述\n\n已知三角形的三条边长 a、b、c，求该三角形的面积。面积可以用海伦公式计算：设 S 为周长的一半，S = (a + b + c) / 2，则面积 Area = √(S(S-a)(S-b)(S-c))。求平方根需使用库函数 `sqrt`，使用前要包含头文件 `math.h`。三条边能构成三角形的条件是：任意两边之和大于第三边。\n\n### 输入格式\n\n一行，三个正整数 a、b、c，用空格分隔，代表三条边的长度（1 ≤ a、b、c ≤ 1000）。\n\n### 输出格式\n\n只有一行：如果能构成三角形，输出面积，保留 3 位小数；否则输出 `The edges cannot make up of a triangle.`。",
+      "samples": [
+        {
+          "in": "5 12 13\n",
+          "out": "30.000\n"
+        },
+        {
+          "in": "3 4 5\n",
+          "out": "6.000\n"
+        },
+        {
+          "in": "1 2 3\n",
+          "out": "The edges cannot make up of a triangle.\n"
+        }
+      ],
+      "hint": "先判断 `a + b > c && a + c > b && b + c > a`；再用 `#include <math.h>` 中的 `sqrt` 计算海伦公式，注意 S 要用浮点数。",
+      "solution": "#include <stdio.h>\n#include <math.h>\n\nint main(void)\n{\n    int a, b, c;\n\n    scanf(\"%d%d%d\", &a, &b, &c);\n    if (a + b > c && a + c > b && b + c > a) {\n        double s = (a + b + c) / 2.0;\n        double area = sqrt(s * (s - a) * (s - b) * (s - c));\n        printf(\"%.3f\\n\", area);\n    } else {\n        printf(\"The edges cannot make up of a triangle.\\n\");\n    }\n    return 0;\n}\n",
+      "pitfalls": "`S = (a + b + c) / 2.0` 不能写成 `/ 2`，否则会整除丢掉小数；`sqrt` 需要 `#include <math.h>`。"
+    },
+    {
+      "id": "A11",
+      "cat": "basic",
+      "title": "双十一满减与会员折扣",
+      "difficulty": 4,
+      "tags": [
+        "浮点比较",
+        "分段计费",
+        "格式控制"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n\n双十一期间，某店铺按订单商品总价实行满减，规则如下：\n\n- 总价 ≥ 300 元，减 50 元；\n- 200 元 ≤ 总价 < 300 元，减 30 元；\n- 100 元 ≤ 总价 < 200 元，减 10 元；\n- 总价 < 100 元，不减。\n\n会员在满减后的金额上再享受 95 折（非会员不享受），折扣金额四舍五入到分（即 0.01 元）。已知一笔订单有 3 件商品，请计算实付金额。\n\n注意：商品单价以「元」为单位、最多两位小数，但浮点数无法精确表示 0.01，直接对 double 求和再与 300、200、100 比较，可能出现「总价本应是 300.00 元却判成不到 300」的误差。建议先把金额换算成「分」（整数）再比较和计算。\n\n### 输入格式\n\n第一行：三个浮点数，分别为三件商品的单价（单位：元，0.01 ≤ 单价 ≤ 9999.99，最多两位小数），用空格分隔。第二行：一个字符，`Y` 表示会员，`N` 表示非会员。\n\n### 输出格式\n\n一行，一个实数，表示实付金额，保留两位小数。\n\n### 样例说明\n\n样例 1 中三件商品总价恰好为 300.00 元，应进入「满 300 减 50」档，实付 250.00 元。若直接用 `double` 累加，总和可能是 299.999…，从而误判为「满 200 减 30」档；因此先把金额换算成「分」（整数）再比较档位。",
+      "samples": [
+        {
+          "in": "114.60 181.70 3.70\nN\n",
+          "out": "250.00\n"
+        },
+        {
+          "in": "50.00 30.00 25.00\nY\n",
+          "out": "90.25\n"
+        },
+        {
+          "in": "10.00 5.00 3.00\nN\n",
+          "out": "18.00\n"
+        }
+      ],
+      "hint": "把每个单价换算成「分」：`(long long)(p * 100 + 0.5)`，求和后用整数分做满减和 95 折，最后分别输出整数部分和小数部分，避免浮点误差。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    double p1, p2, p3;\n    char member;\n    long long cents;\n\n    scanf(\"%lf%lf%lf\", &p1, &p2, &p3);\n    scanf(\" %c\", &member);\n\n    cents = (long long)(p1 * 100 + 0.5)\n          + (long long)(p2 * 100 + 0.5)\n          + (long long)(p3 * 100 + 0.5);\n\n    if (cents >= 30000) {\n        cents -= 5000;\n    } else if (cents >= 20000) {\n        cents -= 3000;\n    } else if (cents >= 10000) {\n        cents -= 1000;\n    }\n\n    if (member == 'Y') {\n        cents = (cents * 95 + 50) / 100;\n    }\n\n    printf(\"%lld.%02lld\\n\", cents / 100, cents % 100);\n    return 0;\n}\n",
+      "pitfalls": "300.00 元必须按「满 300 减 50」计算，直接对 double 求和可能得到 299.999… 而判错档位；95 折按分四舍五入：`(cents * 95 + 50) / 100`；输出必须恰好两位小数。"
+    },
+    {
+      "id": "B01",
+      "cat": "select",
+      "title": "两个整数的大小比较",
+      "difficulty": 2,
+      "tags": [
+        "if-else",
+        "比较"
+      ],
+      "source": "PTA 7-6（实验2_1）",
+      "desc": "### 题目描述\n\n已知两个整数，请使用 `if-else` 选择结构比较它们的大小：将较大数存入变量 `max`，将较小数存入变量 `min`，并输出比较结果。\n\n### 输入格式\n\n一行，两个整数，用空格分隔。测试用例保证这两个数可以用 `int` 类型存储。\n\n### 输出格式\n\n如果两个整数相等，输出 `The two numbers are equal.`；如果不等，输出 `The larger number is L, the smaller number is S.`，其中 L、S 分别填入较大数和较小数。",
+      "samples": [
+        {
+          "in": "100 25\n",
+          "out": "The larger number is 100, the smaller number is 25.\n"
+        },
+        {
+          "in": "7 7\n",
+          "out": "The two numbers are equal.\n"
+        },
+        {
+          "in": "-3 -9\n",
+          "out": "The larger number is -3, the smaller number is -9.\n"
+        }
+      ],
+      "hint": "先用 `if` 判断两数是否相等，再用 `if-else` 分别选出 `max` 与 `min`。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    int a, b, max, min;\n\n    scanf(\"%d%d\", &a, &b);\n    if (a == b) {\n        printf(\"The two numbers are equal.\\n\");\n    } else {\n        if (a > b) {\n            max = a;\n            min = b;\n        } else {\n            max = b;\n            min = a;\n        }\n        printf(\"The larger number is %d, the smaller number is %d.\\n\", max, min);\n    }\n    return 0;\n}\n",
+      "pitfalls": "相等的情况要单独处理，不能输出「较大数/较小数」；负数比较时不要用绝对值。"
+    },
+    {
+      "id": "B02",
+      "cat": "select",
+      "title": "表达式求值与除零判断",
+      "difficulty": 2,
+      "tags": [
+        "浮点运算",
+        "除零判断"
+      ],
+      "source": "PTA 7-8（实验2_3）",
+      "desc": "### 题目描述\n\n有表达式 `a / (b * c - d)`，请计算它的值。四个操作数均用 `double` 型存储。\n\n### 输入格式\n\n一行，四个浮点数，用空格分隔，依次代表 a、b、c、d（|a|、|b|、|c|、|d| ≤ 1000）。测试用例保证分母要么恰好为 0，要么与 0 有明显差距，不会出现非常接近 0 的模糊情况。\n\n### 输出格式\n\n如果除数为 0，输出 `error`；否则输出表达式的值，保留 1 位小数。",
+      "samples": [
+        {
+          "in": "66.09 7.7 3.5 1.6\n",
+          "out": "2.6\n"
+        },
+        {
+          "in": "1 1 2 2\n",
+          "out": "error\n"
+        },
+        {
+          "in": "1 2 3 4\n",
+          "out": "0.5\n"
+        }
+      ],
+      "hint": "先计算分母 `b * c - d` 并判断它是否为 0：为 0 时直接输出 `error`，否则再计算除法。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    double a, b, c, d, denom;\n\n    scanf(\"%lf%lf%lf%lf\", &a, &b, &c, &d);\n    denom = b * c - d;\n    if (denom == 0.0) {\n        printf(\"error\\n\");\n    } else {\n        printf(\"%.1f\\n\", a / denom);\n    }\n    return 0;\n}\n",
+      "pitfalls": "分母为 0 时不能做除法；输出结果保留 1 位小数。"
+    },
+    {
+      "id": "B03",
+      "cat": "select",
+      "title": "百分制成绩的等级划分",
+      "difficulty": 2,
+      "tags": [
+        "多分支",
+        "区间判断"
+      ],
+      "source": "PTA 7-20（实验3_3）",
+      "desc": "### 题目描述\n\n将百分制成绩 score 按下列原则划分等级：score ≥ 90 为 A；80 ≤ score < 90 为 B；70 ≤ score < 80 为 C；60 ≤ score < 70 为 D；score < 60 为 E。\n\n### 输入格式\n\n一行，一个整数 score。测试用例保证所有整数可以用 `int` 类型存储。\n\n### 输出格式\n\n只有一行：当成绩小于 0 或大于 100 时，输出 `The score is out of range!`；否则输出该成绩对应的等级（一个大写字母）。",
+      "samples": [
+        {
+          "in": "89\n",
+          "out": "B\n"
+        },
+        {
+          "in": "100\n",
+          "out": "A\n"
+        },
+        {
+          "in": "-5\n",
+          "out": "The score is out of range!\n"
+        }
+      ],
+      "hint": "用 `if-else if` 链从高分到低分依次判断；注意先处理小于 0 或大于 100 的越界情况。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    int score;\n\n    scanf(\"%d\", &score);\n    if (score < 0 || score > 100) {\n        printf(\"The score is out of range!\\n\");\n    } else if (score >= 90) {\n        printf(\"A\\n\");\n    } else if (score >= 80) {\n        printf(\"B\\n\");\n    } else if (score >= 70) {\n        printf(\"C\\n\");\n    } else if (score >= 60) {\n        printf(\"D\\n\");\n    } else {\n        printf(\"E\\n\");\n    }\n    return 0;\n}\n",
+      "pitfalls": "区间是左闭右开：90 分是 A，89 分是 B，60 分是 D；越界提示末尾的感叹号和句点要完全一致。"
+    },
+    {
+      "id": "B04",
+      "cat": "select",
+      "title": "居民阶梯水费计算",
+      "difficulty": 3,
+      "tags": [
+        "多分支",
+        "分段计费"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n\n某市居民生活用水实行阶梯水价，按每户每月用水量 x（单位：吨，取整数）计费：\n\n- 不超过 15 吨的部分，每吨 2.50 元；\n- 超过 15 吨但不超过 25 吨的部分，每吨 3.75 元；\n- 超过 25 吨的部分，每吨 7.00 元。\n\n请计算该户当月应缴的水费。\n\n### 输入格式\n\n一行，一个整数 x（0 ≤ x ≤ 80），表示当月用水量（单位：吨）。\n\n### 输出格式\n\n一行，一个实数，表示应缴水费，保留 2 位小数。",
+      "samples": [
+        {
+          "in": "8\n",
+          "out": "20.00\n"
+        },
+        {
+          "in": "20\n",
+          "out": "56.25\n"
+        },
+        {
+          "in": "30\n",
+          "out": "110.00\n"
+        }
+      ],
+      "hint": "用 `if-else if` 分成 0~15、15~25、25 以上三段，每一段只累加超出该档起点的部分水费。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    int x;\n    double fee;\n\n    scanf(\"%d\", &x);\n    if (x <= 15) {\n        fee = x * 2.50;\n    } else if (x <= 25) {\n        fee = 15 * 2.50 + (x - 15) * 3.75;\n    } else {\n        fee = 15 * 2.50 + 10 * 3.75 + (x - 25) * 7.00;\n    }\n    printf(\"%.2f\\n\", fee);\n    return 0;\n}\n",
+      "pitfalls": "不能把全部用水量都按最高档单价相乘；15 吨、25 吨这两个边界属于较低档。"
+    },
+    {
+      "id": "B05",
+      "cat": "select",
+      "title": "该日期是当年的第几天",
+      "difficulty": 3,
+      "tags": [
+        "switch",
+        "闰年",
+        "累加"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n\n给定年份 y、月份 m 和日期 d，求这一天是这一年的第几天。闰年规则为：年份能被 4 整除且不能被 100 整除，或者能被 400 整除时是闰年（闰年的 2 月有 29 天，平年 28 天）。\n\n### 输入格式\n\n一行，三个整数 y、m、d（1900 ≤ y ≤ 2500，1 ≤ m ≤ 12，1 ≤ d ≤ 该月的天数），用空格分隔，保证日期合法。\n\n### 输出格式\n\n一行，一个整数，表示这一天是当年的第几天。",
+      "samples": [
+        {
+          "in": "2024 3 1\n",
+          "out": "61\n"
+        },
+        {
+          "in": "1900 3 1\n",
+          "out": "60\n"
+        },
+        {
+          "in": "2023 12 31\n",
+          "out": "365\n"
+        }
+      ],
+      "hint": "先判断闰年确定 2 月天数；再用 `switch` 从当前月份开始，借助不加 `break` 的「贯穿」特性，把之前各月的天数依次累加，最后加上 d。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    int y, m, d, leap, sum;\n\n    scanf(\"%d%d%d\", &y, &m, &d);\n    leap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;\n    sum = d;\n\n    switch (m) {\n    /* 11 月：30 天 */\n    case 12: sum += 30;  /* fall through */\n    /* 10 月：31 天 */\n    case 11: sum += 31;  /* fall through */\n    /* 9 月：30 天 */\n    case 10: sum += 30;  /* fall through */\n    /* 8 月：31 天 */\n    case 9:  sum += 31;  /* fall through */\n    /* 7 月：31 天 */\n    case 8:  sum += 31;  /* fall through */\n    /* 6 月：30 天 */\n    case 7:  sum += 30;  /* fall through */\n    /* 5 月：31 天 */\n    case 6:  sum += 31;  /* fall through */\n    /* 4 月：30 天 */\n    case 5:  sum += 30;  /* fall through */\n    /* 3 月：31 天 */\n    case 4:  sum += 31;  /* fall through */\n    /* 2 月：闰年 29 天，平年 28 天 */\n    case 3:  sum += leap ? 29 : 28;  /* fall through */\n    /* 1 月：31 天 */\n    case 2:  sum += 31;  /* fall through */\n    case 1:  break;\n    default: break;\n    }\n\n    printf(\"%d\\n\", sum);\n    return 0;\n}\n",
+      "pitfalls": "`switch` 里不加 `break` 的贯穿是故意使用的，但 `case 1` 后必须 `break`，否则不会停止累加；闰年的整百规则别漏（1900 不是闰年）。"
+    },
+    {
+      "id": "B06",
+      "cat": "select",
+      "title": "判断同构数",
+      "difficulty": 3,
+      "tags": [
+        "整除取余",
+        "条件判断",
+        "边界检查"
+      ],
+      "source": "PTA 7-27（实验3_10）",
+      "desc": "### 题目描述\n\n如果一个数出现在它平方数的右边，则称这个数为「同构数」。例如 5 的平方是 25，5 出现在 25 的右边；25 的平方是 625，25 出现在 625 的右边，所以 5 和 25 都是同构数。给定一个整数 x，请判断它是否为同构数。\n\n### 输入格式\n\n一行，一个整数 x。测试用例保证 x 可以用 `int` 型存储。\n\n### 输出格式\n\n只有一行：如果 1 ≤ x ≤ 10000 且 x 是同构数，输出 `Yes`；如果 1 ≤ x ≤ 10000 但 x 不是同构数，输出 `No`；如果 x 不在 [1, 10000] 范围内，则输出 `%d out of range` 形式的提示，其中 `%d` 为实际输入的整数。",
+      "samples": [
+        {
+          "in": "5\n",
+          "out": "Yes\n"
+        },
+        {
+          "in": "7\n",
+          "out": "No\n"
+        },
+        {
+          "in": "20000\n",
+          "out": "20000 out of range\n"
+        }
+      ],
+      "hint": "先判断 x 是否在 [1, 10000] 内；再数出 x 的位数 k，比较 `x * x % 10^k` 与 x 是否相等。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    int x;\n\n    scanf(\"%d\", &x);\n    if (x < 1 || x > 10000) {\n        printf(\"%d out of range\\n\", x);\n    } else {\n        long long sq = (long long)x * x;\n        long long p = 10;\n        while (p <= x) {\n            p *= 10;\n        }\n        if (sq % p == x) {\n            printf(\"Yes\\n\");\n        } else {\n            printf(\"No\\n\");\n        }\n    }\n    return 0;\n}\n",
+      "pitfalls": "必须先判断范围再计算；x 最大为 10000，`x * x` 为 10^8，用 `int` 也放得下，但用 `long long` 更稳妥。"
+    },
+    {
+      "id": "B07",
+      "cat": "select",
+      "title": "鸡、兔、蜻蜓的数量",
+      "difficulty": 3,
+      "tags": [
+        "穷举",
+        "条件判断",
+        "多解输出"
+      ],
+      "source": "PTA 7-28（实验3_11）",
+      "desc": "### 题目描述\n\n鸡有一个头两条腿，兔子有一个头四条腿，蜻蜓有一个头六条腿，没有例外。一个笼子里共有 m 个头、n 条腿，问鸡、兔、蜻蜓各有多少只？可能有多组解。\n\n### 输入格式\n\n一行，两个正整数 m 和 n（1 ≤ m ≤ 1000，1 ≤ n ≤ 4000），用空格分隔，分别表示头的个数和腿的条数。\n\n### 输出格式\n\n每行输出一组解，格式为「鸡的只数 兔的只数 蜻蜓的只数」三个整数，用空格分隔。多组解按鸡的只数从小到大排列。如果不存在任何解，则不输出任何内容。测试数据保证所有整数可以用 `int` 型存储。",
+      "samples": [
+        {
+          "in": "15 40\n",
+          "out": "10 5 0\n11 3 1\n12 1 2\n"
+        },
+        {
+          "in": "5 14\n",
+          "out": "3 2 0\n4 0 1\n"
+        }
+      ],
+      "hint": "设鸡 c、兔 r、蜻蜓 d，则 c + r + d = m、2c + 4r + 6d = n；两式相减得 r + 2d = (n - 2m) / 2，于是只需枚举 d 就能依次求出 r 和 c。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    int m, n, rest, k, d, r, c;\n\n    scanf(\"%d%d\", &m, &n);\n    rest = n - 2 * m;              /* 2r + 4d = n - 2m */\n    if (rest >= 0 && rest % 2 == 0) {\n        k = rest / 2;              /* r + 2d = k */\n        for (d = 0; d <= k / 2; d++) {\n            r = k - 2 * d;\n            c = m - r - d;\n            if (c >= 0 && r >= 0) {\n                printf(\"%d %d %d\\n\", c, r, d);\n            }\n        }\n    }\n    return 0;\n}\n",
+      "pitfalls": "三种动物的数量都必须非负；无解时不要输出任何内容；按 d 从小到大枚举，鸡的只数正好从小到大排列。"
+    },
+    {
+      "id": "B08",
+      "cat": "select",
+      "title": "三对三篮球赛胜负判定",
+      "difficulty": 4,
+      "tags": [
+        "多分支",
+        "规则判断",
+        "边界"
+      ],
+      "source": "PTA 7-11",
+      "desc": "### 题目描述\n\n三对三篮球赛的得分规则为：圆弧线以内投篮命中得 1 分，圆弧线以外投篮命中得 2 分，罚篮命中得 1 分。胜负规则为：一节常规时间 10 分钟；常规时间内率先取得 21 分或以上的队伍获胜；如果常规时间结束时两队打平且都未达到 21 分，则需要进行加时赛（加时赛中率先取得 2 分的队伍获胜）。\n\n给定常规时间结束（包括某队先得到 21 分或以上直接获胜）时的比分，请判断比赛结果。\n\n### 输入格式\n\n一行，两个非负整数 A 和 B（0 ≤ A、B ≤ 100），用空格分隔，依次表示 A 队和 B 队的得分。\n\n### 输出格式\n\n输出一行，为下列四种结果之一：\n\n- A 队获胜时输出 `A win`；\n- B 队获胜时输出 `B win`；\n- 常规时间结束两队打平、需要加时赛时输出 `no result`；\n- 比分不可能出现时输出 `error`。\n\n判断比分是否可能的方法：比赛在某一队率先达到 21 分或以上时立即结束，因此如果给出的比分中两队都达到 21 分或以上，这个比分就不可能出现，应输出 `error`。",
+      "samples": [
+        {
+          "in": "11 17\n",
+          "out": "B win\n"
+        },
+        {
+          "in": "20 20\n",
+          "out": "no result\n"
+        },
+        {
+          "in": "29 30\n",
+          "out": "error\n"
+        }
+      ],
+      "hint": "依次判断：两队是否都达到 21 分（error）→ 是否只有一队达到 21 分（该队获胜）→ 两队都未到 21 分时比较大小。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    int a, b;\n\n    scanf(\"%d%d\", &a, &b);\n    if (a >= 21 && b >= 21) {\n        printf(\"error\\n\");\n    } else if (a >= 21) {\n        printf(\"A win\\n\");\n    } else if (b >= 21) {\n        printf(\"B win\\n\");\n    } else if (a > b) {\n        printf(\"A win\\n\");\n    } else if (b > a) {\n        printf(\"B win\\n\");\n    } else {\n        printf(\"no result\\n\");\n    }\n    return 0;\n}\n",
+      "pitfalls": "两队都 ≥ 21 时比分不可能出现；只有两队都低于 21 分且相等时才输出 `no result`；`A win`、`B win` 的大小写和空格要与题目一致。"
+    },
+    {
+      "id": "B09",
+      "cat": "select",
+      "title": "出租车分段计费",
+      "difficulty": 4,
+      "tags": [
+        "多分支",
+        "分段计费",
+        "浮点运算"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n\n某市出租车计费规则如下（不计等候时间等其他费用）：\n\n- 起步价 13 元，包含 3 公里（含 3 公里）；\n- 超过 3 公里且不超过 15 公里的部分，每公里 2.30 元；\n- 超过 15 公里的部分，每公里 3.45 元（已含空驶费）；\n- 夜间（22:00 至次日 5:00）乘车的总费用加收 20%。\n\n给定本次行程的行驶里程和出行时段，计算应付车费。\n\n### 输入格式\n\n共两行：第一行为一个浮点数 s（0.1 ≤ s ≤ 100.0，最多一位小数），表示行驶里程（单位：公里）；第二行为一个字符，`D` 表示白天（5:00 至 22:00），`N` 表示夜间（22:00 至次日 5:00）。\n\n### 输出格式\n\n一行，一个实数，表示应付车费，保留 2 位小数。",
+      "samples": [
+        {
+          "in": "10.0\nD\n",
+          "out": "29.10\n"
+        },
+        {
+          "in": "20.0\nN\n",
+          "out": "69.42\n"
+        },
+        {
+          "in": "2.5\nD\n",
+          "out": "13.00\n"
+        }
+      ],
+      "hint": "先按里程用 `if-else if` 分成 `s ≤ 3`、`3 < s ≤ 15`、`s > 15` 三段计算基础车费，再根据时段字符决定是否乘以 1.2。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    double s, fee;\n    char period;\n\n    scanf(\"%lf\", &s);\n    scanf(\" %c\", &period);\n\n    if (s <= 3.0) {\n        fee = 13.0;\n    } else if (s <= 15.0) {\n        fee = 13.0 + (s - 3.0) * 2.30;\n    } else {\n        fee = 13.0 + 12.0 * 2.30 + (s - 15.0) * 3.45;\n    }\n    if (period == 'N') {\n        fee = fee * 1.2;\n    }\n    printf(\"%.2f\\n\", fee);\n    return 0;\n}\n",
+      "pitfalls": "15 公里是分段点，前后两段在 15 处应连续；夜间加价是在总费用基础上乘 1.2，而不是在每段单价上；结果保留 2 位小数。"
+    }
+  ]
+}

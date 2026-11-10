@@ -1,0 +1,310 @@
+{
+  "problems": [
+    {
+      "id": "F01",
+      "cat": "mix",
+      "title": "统计字符串中的字母个数",
+      "difficulty": 2,
+      "tags": [
+        "字符数组",
+        "计数",
+        "ASCII"
+      ],
+      "source": "PTA 7-52（实验9_3）",
+      "desc": "### 题目描述\n给定一个非空字符串，字符串中可能包含除空白符、换行符以外的任意字符。请统计其中每个英文字母出现的次数，**区分大小写**。\n\n要求只统计出现过的字母，并按字母的 ASCII 码从小到大输出。\n\n### 输入格式\n一行，一个长度不超过 100 的非空字符串，字符串中不含空格、制表符和换行符。\n\n### 输出格式\n按字母 ASCII 码顺序，每个出现过的字母输出一行，格式为：\n\n`The character X has presented N times.`\n\n其中 `X` 为该字母，`N` 为出现次数。注意不论次数多少，单词一律写作 `times`。",
+      "samples": [
+        {
+          "in": "AAAsdf&^%DF879as\n",
+          "out": "The character A has presented 3 times.\nThe character D has presented 1 times.\nThe character F has presented 1 times.\nThe character a has presented 1 times.\nThe character d has presented 1 times.\nThe character f has presented 1 times.\nThe character s has presented 2 times.\n"
+        }
+      ],
+      "hint": "开辟一个大小为 128 的整型计数数组，用字符的 ASCII 码作为下标，出现一次就加一；最后从 0 到 127 扫一遍，只输出 `cnt[i] > 0` 且是字母的项。",
+      "pitfalls": "`scanf` 用 `%s` 读取时会在空白处停止，本题输入不含空白，可以直接读整个串。注意区分大小写，`A` 和 `a` 要分开统计。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    char s[105];\n    int cnt[128] = {0};\n    int i;\n\n    scanf(\"%s\", s);\n    for (i = 0; s[i] != '\\0'; i++) {\n        cnt[(unsigned char)s[i]]++;\n    }\n    for (i = 0; i < 128; i++) {\n        int isUpper = (i >= 'A' && i <= 'Z');\n        int isLower = (i >= 'a' && i <= 'z');\n        if ((isUpper || isLower) && cnt[i] > 0) {\n            printf(\"The character %c has presented %d times.\\n\", i, cnt[i]);\n        }\n    }\n    return 0;\n}\n"
+    },
+    {
+      "id": "F02",
+      "cat": "mix",
+      "title": "求数组中最长平台长度",
+      "difficulty": 2,
+      "tags": [
+        "数组",
+        "循环",
+        "最长连续段"
+      ],
+      "source": "PTA 7-43（实验7_8）",
+      "desc": "### 题目描述\n给定一个长度为 n 的整数数组。数组中连续的相等元素构成的子序列称为一个「平台」，例如序列 `1 1 2 2 4 5 7 7 7 7 7 7 3 3 9` 中最长的平台由 6 个 7 组成，长度为 6。\n\n请设计算法，求出数组中最长平台的长度（数据保证数组非空）。\n\n### 输入格式\n第一行一个整数 n（0 < n ≤ 1000）。\n第二行 n 个用空格分隔的整数，每个整数均可用 `int` 存储。\n\n### 输出格式\n一行，一个整数，表示最长平台的长度。",
+      "samples": [
+        {
+          "in": "15\n1 1 2 2 4 5 7 7 7 7 7 7 3 3 9\n",
+          "out": "6\n"
+        }
+      ],
+      "hint": "边遍历边维护两个变量：当前平台长度 `cur` 和最长平台长度 `best`。当前元素与前一个元素相等时 `cur` 加一，否则把 `cur` 重置为 1，每次再更新 `best`。",
+      "pitfalls": "平台要求元素连续，不要把「子序列」理解成可以跳着选。n 可能为 1，答案初始值取 1 即可。",
+      "solution": "#include <stdio.h>\n\n#define N 1005\n\nint main(void)\n{\n    int n, a[N];\n    int i, cur = 1, best = 1;\n\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++) {\n        scanf(\"%d\", &a[i]);\n    }\n    for (i = 1; i < n; i++) {\n        if (a[i] == a[i - 1]) {\n            cur++;\n        } else {\n            cur = 1;\n        }\n        if (cur > best) {\n            best = cur;\n        }\n    }\n    printf(\"%d\\n\", best);\n    return 0;\n}\n"
+    },
+    {
+      "id": "F03",
+      "cat": "mix",
+      "title": "统计区间内的元素个数",
+      "difficulty": 2,
+      "tags": [
+        "数组",
+        "条件分支",
+        "区间计数"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n给定 n 个整数（可正可负，允许重复）和 m 个查询，每个查询给出一个闭区间 [L, R]。请统计数组中满足 L ≤ a[i] ≤ R 的元素个数。\n\n### 输入格式\n第一行两个整数 n 和 m（1 ≤ n ≤ 1000，1 ≤ m ≤ 1000）。\n第二行 n 个用空格分隔的整数 a[i]（|a[i]| ≤ 10^4）。\n接下来 m 行，每行两个整数 L 和 R（|L| ≤ 10^4，|R| ≤ 10^4，L ≤ R），表示一个查询区间。\n\n### 输出格式\n输出 m 行，每行一个整数，依次为每个查询的答案。",
+      "samples": [
+        {
+          "in": "6 3\n-2 0 3 5 3 9\n-1 3\n3 5\n0 0\n",
+          "out": "3\n3\n1\n"
+        }
+      ],
+      "hint": "把 n 个整数读入数组；对每个查询，用一层循环扫一遍数组，用 `if (L <= a[i] && a[i] <= R)` 计数即可，复杂度 O(nm)。",
+      "pitfalls": "区间是闭区间，注意两边的等号。a[i]、L、R 都可能为负数，比较时不要假设它们非负。",
+      "solution": "#include <stdio.h>\n\n#define N 1005\n\nint main(void)\n{\n    int n, m, i, q;\n    int a[N];\n    int left, right, cnt;\n\n    scanf(\"%d%d\", &n, &m);\n    for (i = 0; i < n; i++) {\n        scanf(\"%d\", &a[i]);\n    }\n    for (q = 0; q < m; q++) {\n        scanf(\"%d%d\", &left, &right);\n        cnt = 0;\n        for (i = 0; i < n; i++) {\n            if (left <= a[i] && a[i] <= right) {\n                cnt++;\n            }\n        }\n        printf(\"%d\\n\", cnt);\n    }\n    return 0;\n}\n"
+    },
+    {
+      "id": "F04",
+      "cat": "mix",
+      "title": "括号匹配检测",
+      "difficulty": 3,
+      "tags": [
+        "字符数组",
+        "栈式计数",
+        "括号匹配"
+      ],
+      "source": "PTA 7-50（实验9_1）",
+      "desc": "### 题目描述\n给定一个非空字符串，字符串中包含除空白符、换行符以外的任意字符。请检测串中的圆括号 `(` 与 `)` 是否配对。\n\n例如 `((a+b)*(c+d))` 是配对的；`((a+b)*)c+d))` 是不配对的（出现了多余的右括号）。\n\n### 输入格式\n一行，一个长度不超过 100 的非空字符串，字符串中不含空格、制表符和换行符。\n\n### 输出格式\n若括号配对，输出一行 `parentheses match!`；否则输出一行 `parentheses do not match!`。",
+      "samples": [
+        {
+          "in": "((a+b)*(c+d))\n",
+          "out": "parentheses match!\n"
+        },
+        {
+          "in": "((a+b)*)c+d))\n",
+          "out": "parentheses do not match!\n"
+        }
+      ],
+      "hint": "用一个计数器表示当前还有多少个左括号没有配对：遇到 `(` 加一，遇到 `)` 时若计数器为 0 说明多出右括号，否则减一；扫完整个字符串后计数器必须为 0。",
+      "pitfalls": "不能只比较左、右括号的总数是否相等，还要保证任意前缀中右括号都不会多于左括号，例如 `)(` 也是不配对的。",
+      "solution": "#include <stdio.h>\n\nint main(void)\n{\n    char s[105];\n    int i, depth = 0, ok = 1;\n\n    scanf(\"%s\", s);\n    for (i = 0; s[i] != '\\0'; i++) {\n        if (s[i] == '(') {\n            depth++;            /* 遇到左括号，层数加一 */\n        } else if (s[i] == ')') {\n            if (depth == 0) {   /* 没有对应的左括号 */\n                ok = 0;\n                break;\n            }\n            depth--;\n        }\n    }\n    if (depth != 0) {           /* 还有左括号没被匹配 */\n        ok = 0;\n    }\n    if (ok) {\n        printf(\"parentheses match!\\n\");\n    } else {\n        printf(\"parentheses do not match!\\n\");\n    }\n    return 0;\n}\n"
+    },
+    {
+      "id": "F05",
+      "cat": "mix",
+      "title": "插入排序（逐趟输出）",
+      "difficulty": 3,
+      "tags": [
+        "插入排序",
+        "数组",
+        "排序过程"
+      ],
+      "source": "PTA 6-19（实验7_12，改编为完整程序）",
+      "desc": "### 题目描述\n本题要求实现插入排序，把数组的前 n 个元素按升序排列，并且**每完成一趟插入就输出一次当前数组**。\n\n插入排序的过程：先把 `a[1]` 插入到只含 `a[0]` 的有序段中；再把 `a[2]` 插入到 `a[0]`、`a[1]` 组成的有序段中；依次类推，直到 `a[n-1]` 插入完毕。即第 i 趟（i 从 1 到 n-1）把 `a[i]` 插入到 `a[0]`～`a[i-1]` 中，使前 i+1 个元素有序。\n\n### 输入格式\n第一行一个整数 n（1 ≤ n ≤ 1000）。\n第二行 n 个用空格分隔的整数，每个数均可用 `int` 存储。\n\n### 输出格式\n输出 n-1 行，依次为第 1 趟到第 n-1 趟排序后数组的全部 n 个元素。每行内 `a[0]` 至 `a[n-1]` 相邻两数之间用一个空格分隔，行末无多余空格并换行。\n若 n = 1，则没有需要输出的排序趟数，不输出任何内容。",
+      "samples": [
+        {
+          "in": "8\n49 38 65 97 76 13 27 49\n",
+          "out": "38 49 65 97 76 13 27 49\n38 49 65 97 76 13 27 49\n38 49 65 97 76 13 27 49\n38 49 65 76 97 13 27 49\n13 38 49 65 76 97 27 49\n13 27 38 49 65 76 97 49\n13 27 38 49 49 65 76 97\n"
+        }
+      ],
+      "hint": "从 i = 1 开始，把 `a[i]` 暂存到变量 `key`，把前面比 `key` 大的元素依次后移一位，最后把 `key` 放进空出的位置；每一趟结束后输出整个数组。",
+      "pitfalls": "内层循环条件要写成 `j >= 0 && a[j] > key`，先判断下标再访问元素才不会越界。每趟输出的是数组从头到尾的全部 n 个元素，共 n-1 行。",
+      "solution": "#include <stdio.h>\n\n#define N 1005\n\nstatic void printArray(const int a[], int n)\n{\n    int i;\n    for (i = 0; i < n; i++) {\n        if (i > 0) {\n            printf(\" \");\n        }\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n}\n\nint main(void)\n{\n    int n, a[N];\n    int i, j, key;\n\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++) {\n        scanf(\"%d\", &a[i]);\n    }\n    for (i = 1; i < n; i++) {      /* 第 i 趟：把 a[i] 插入前面有序段 */\n        key = a[i];\n        j = i - 1;\n        while (j >= 0 && a[j] > key) {\n            a[j + 1] = a[j];\n            j--;\n        }\n        a[j + 1] = key;\n        printArray(a, n);          /* 每趟结束输出整个数组 */\n    }\n    return 0;\n}\n"
+    },
+    {
+      "id": "F06",
+      "cat": "mix",
+      "title": "选择排序（逐趟输出）",
+      "difficulty": 3,
+      "tags": [
+        "选择排序",
+        "数组",
+        "排序过程"
+      ],
+      "source": "PTA 6-21（实验7_13，改编为完整程序）",
+      "desc": "### 题目描述\n本题要求实现选择排序，把数组的前 n 个元素按升序排列，并且**每完成一趟选择就输出一次当前数组**。\n\n选择排序的过程：在 `a[0]`～`a[n-1]` 中找出最小元素，与 `a[0]` 交换；再在 `a[1]`～`a[n-1]` 中找出最小元素，与 `a[1]` 交换；依次类推，直到在 `a[n-2]`～`a[n-1]` 中选出最小元素放到 `a[n-2]`。\n\n### 输入格式\n第一行一个整数 n（1 < n ≤ 1000）。\n第二行 n 个用空格分隔的整数，每个数均可用 `int` 存储。\n\n### 输出格式\n输出 n-1 行，依次为第 1 趟到第 n-1 趟排序后数组的全部 n 个元素。每行内 `a[0]` 至 `a[n-1]` 相邻两数之间用一个空格分隔，行末无多余空格并换行。",
+      "samples": [
+        {
+          "in": "8\n49 38 65 97 76 13 27 4\n",
+          "out": "4 38 65 97 76 13 27 49\n4 13 65 97 76 38 27 49\n4 13 27 97 76 38 65 49\n4 13 27 38 76 97 65 49\n4 13 27 38 49 97 65 76\n4 13 27 38 49 65 97 76\n4 13 27 38 49 65 76 97\n"
+        }
+      ],
+      "hint": "第 i 趟在 `a[i]`～`a[n-1]` 中找出最小值的下标 `minIdx`，再与 `a[i]` 交换；每趟结束输出整个数组，共执行 n-1 趟。",
+      "pitfalls": "如果最小值本来就在 `a[i]` 位置可以不交换，输出结果相同。注意每趟都要输出全部 n 个元素，不能只输出已排好的部分。",
+      "solution": "#include <stdio.h>\n\n#define N 1010\n\nstatic void printArray(const int a[], int n)\n{\n    int i;\n    for (i = 0; i < n; i++) {\n        if (i > 0) {\n            printf(\" \");\n        }\n        printf(\"%d\", a[i]);\n    }\n    printf(\"\\n\");\n}\n\nint main(void)\n{\n    int n, a[N];\n    int i, j, minIdx, t;\n\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++) {\n        scanf(\"%d\", &a[i]);\n    }\n    for (i = 0; i < n - 1; i++) {          /* 第 i 趟：确定 a[i] 处的元素 */\n        minIdx = i;\n        for (j = i + 1; j < n; j++) {\n            if (a[j] < a[minIdx]) {\n                minIdx = j;\n            }\n        }\n        if (minIdx != i) {\n            t = a[i];\n            a[i] = a[minIdx];\n            a[minIdx] = t;\n        }\n        printArray(a, n);\n    }\n    return 0;\n}\n"
+    },
+    {
+      "id": "F07",
+      "cat": "mix",
+      "title": "杨辉三角的生成与输出",
+      "difficulty": 3,
+      "tags": [
+        "二维数组",
+        "递推",
+        "杨辉三角"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n杨辉三角（也称帕斯卡三角）的规律是：第 1 行只有 1 个数 `1`；第 i 行有 i 个数，每行两端都是 1；从第 3 行起，中间每个数都等于它正上方和左上方两个数之和。\n\n给定 n，请用二维数组按上述规律生成前 n 行，并把三角形按行输出。\n\n### 输入格式\n一行，一个整数 n（1 ≤ n ≤ 20）。\n\n### 输出格式\n输出 n 行，第 i 行输出 i 个整数，相邻两数之间用一个空格分隔，行末无多余空格并换行。",
+      "samples": [
+        {
+          "in": "6\n",
+          "out": "1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1\n1 5 10 10 5 1\n"
+        }
+      ],
+      "hint": "设 `a[i][0] = a[i][i] = 1`，中间元素用递推式 `a[i][j] = a[i-1][j-1] + a[i-1][j]` 计算，最后按行输出前 n 行。",
+      "pitfalls": "第 i 行只有 i 个数，内层循环要写 `j <= i`。输出时用 `j > 0` 控制空格，保证每行行末没有多余空格。",
+      "solution": "#include <stdio.h>\n\n#define N 25\n\nint main(void)\n{\n    int n, i, j;\n    int a[N][N];\n\n    scanf(\"%d\", &n);\n\n    for (i = 0; i < n; i++) {\n        a[i][0] = 1;\n        a[i][i] = 1;\n        for (j = 1; j < i; j++) {\n            a[i][j] = a[i - 1][j - 1] + a[i - 1][j];\n        }\n    }\n\n    for (i = 0; i < n; i++) {\n        for (j = 0; j <= i; j++) {\n            if (j > 0) {\n                printf(\" \");\n            }\n            printf(\"%d\", a[i][j]);\n        }\n        printf(\"\\n\");\n    }\n    return 0;\n}\n"
+    },
+    {
+      "id": "F08",
+      "cat": "mix",
+      "title": "点名册中的重复与缺失学号",
+      "difficulty": 3,
+      "tags": [
+        "计数数组",
+        "循环",
+        "查找"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n某班有 n 名同学，学号本应是 1 到 n。现在名单上有 n 个学号，但其中恰好有 1 个学号写错：某个学号出现了两次，同时另一个学号没有出现（缺失）。\n\n请用计数数组统计每个学号在名单中出现的次数，找出重复的学号和缺失的学号。\n\n### 输入格式\n第一行一个整数 n（2 ≤ n ≤ 1000）。\n第二行 n 个用空格分隔的整数，表示名单上的学号，保证 1 ≤ 学号 ≤ n，且恰好有一个学号重复、一个学号缺失。\n\n### 输出格式\n第一行一个整数，为重复的学号。\n第二行一个整数，为缺失的学号。",
+      "samples": [
+        {
+          "in": "5\n1 3 3 4 5\n",
+          "out": "3\n2\n"
+        },
+        {
+          "in": "2\n2 2\n",
+          "out": "2\n1\n"
+        }
+      ],
+      "hint": "用 `cnt[学号]` 统计每个学号在名单中出现的次数；统计完后从 1 到 n 扫一遍，`cnt[i] == 2` 的 i 是重复学号，`cnt[i] == 0` 的 i 是缺失学号。",
+      "pitfalls": "重复学号和缺失学号要分别记录。循环范围是 1 到 n（不是 0 到 n-1）。",
+      "solution": "#include <stdio.h>\n\n#define N 1005\n\nint main(void)\n{\n    int n, i, num;\n    int cnt[N] = {0};\n    int duplicate = 0, missing = 0;\n\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++) {\n        scanf(\"%d\", &num);\n        cnt[num]++;\n    }\n    for (i = 1; i <= n; i++) {\n        if (cnt[i] == 2) {\n            duplicate = i;\n        } else if (cnt[i] == 0) {\n            missing = i;\n        }\n    }\n    printf(\"%d\\n\", duplicate);\n    printf(\"%d\\n\", missing);\n    return 0;\n}\n"
+    },
+    {
+      "id": "F09",
+      "cat": "mix",
+      "title": "发子弹（环形同时调整）",
+      "difficulty": 4,
+      "tags": [
+        "数组模拟",
+        "环形",
+        "奇数处理"
+      ],
+      "source": "PTA 6-18（实验7_10，改编为完整程序）",
+      "desc": "### 题目描述\n在某次实弹射击训练中，战士们围成一圈发子弹。开始时每名战士手中有若干发子弹，然后按如下规则调整：\n\n- 第一步：每名战士检查自己手中的子弹数，若为奇数，则向班长再要 1 发（变为偶数）。\n- 第二步：每名战士**同时**把自己手中子弹的一半分给下一名战士（最后一名战士把一半分给第 1 名战士）。\n\n一次「调整」指同时完成上述两步。现在给定每名战士的初始子弹数和调整次数 m，请用数组模拟 m 次调整，输出调整结束后每名战士手中的子弹数。\n\n### 输入格式\n第一行一个整数 n（1 ≤ n ≤ 100），为战士总数。\n第二行 n 个用空格分隔的整数，为每名战士手中的初始子弹数（0 ≤ 子弹数 ≤ 1000）。\n第三行一个整数 m（1 ≤ m ≤ 100），为调整次数。\n\n### 输出格式\n一行，n 个整数，为调整 m 次后每名战士手中的子弹数，数字之间用一个空格分隔，行末无多余空格。",
+      "samples": [
+        {
+          "in": "10\n10 2 8 22 16 4 10 6 14 20\n1\n",
+          "out": "15 6 5 15 19 10 7 8 10 17\n"
+        }
+      ],
+      "hint": "一次调整分两步：先扫一遍把所有奇数加 1；再用一个辅助数组保存每人的一半，最后 `b[i] = half[i] + half[(i-1+n)%n]` 同时更新。",
+      "pitfalls": "必须「同时」分配子弹，所以要先把所有人的一半算好再更新，不能使用本轮刚更新过的 `b[i-1]`。下标 `(i-1+n)%n` 用于处理最后一名把一半分给第 1 名的情况。",
+      "solution": "#include <stdio.h>\n\n#define N 105\n\nint main(void)\n{\n    int n, m, t, i;\n    int b[N], half[N];\n\n    scanf(\"%d\", &n);\n    for (i = 0; i < n; i++) {\n        scanf(\"%d\", &b[i]);\n    }\n    scanf(\"%d\", &m);\n\n    for (t = 0; t < m; t++) {\n        for (i = 0; i < n; i++) {          /* 第一步：奇数补成偶数 */\n            if (b[i] % 2 == 1) {\n                b[i]++;\n            }\n        }\n        for (i = 0; i < n; i++) {          /* 第二步：每人的一半 */\n            half[i] = b[i] / 2;\n        }\n        for (i = 0; i < n; i++) {          /* 同时分给下一人，自己留一半 */\n            b[i] = half[i] + half[(i - 1 + n) % n];\n        }\n    }\n\n    for (i = 0; i < n; i++) {\n        if (i > 0) {\n            printf(\" \");\n        }\n        printf(\"%d\", b[i]);\n    }\n    printf(\"\\n\");\n    return 0;\n}\n"
+    },
+    {
+      "id": "F10",
+      "cat": "mix",
+      "title": "斐波那契数列的前缀和",
+      "difficulty": 4,
+      "tags": [
+        "斐波那契",
+        "递推",
+        "前缀和"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n斐波那契数列定义为 F(1) = 1，F(2) = 1，当 i ≥ 3 时 F(i) = F(i-1) + F(i-2)。\n\n给定 n、l、r，请先把 F(1) 到 F(n) 依次存入数组，再求：\n\n- 前 n 项的总和；\n- 第 l 项到第 r 项（含两端）的和。\n\n为了不重复累加，建议先构造前缀和数组 `pref[i] = pref[i-1] + F[i]`，那么第 l 项到第 r 项之和就是 `pref[r] - pref[l-1]`。\n\n### 输入格式\n一行，三个整数 n、l、r，满足 1 ≤ l ≤ r ≤ n ≤ 80。\n\n### 输出格式\n第一行一个整数，表示前 n 项的总和。\n第二行一个整数，表示第 l 项到第 r 项之和。结果可能超出 `int` 范围，请使用 `long long`。",
+      "samples": [
+        {
+          "in": "10 3 7\n",
+          "out": "143\n31\n"
+        },
+        {
+          "in": "1 1 1\n",
+          "out": "1\n1\n"
+        }
+      ],
+      "hint": "用递推式把 F(1)～F(n) 存入数组，再求前缀和 `pref[i] = pref[i-1] + F[i]`；前 n 项和就是 `pref[n]`，区间和就是 `pref[r] - pref[l-1]`。",
+      "pitfalls": "第 80 项及其前缀和会超出 `int` 范围，数组和输出都要用 `long long`（`%lld`）。区间和包含第 l 项，所以减去的是 `pref[l-1]`。",
+      "solution": "#include <stdio.h>\n\n#define N 85\n\nint main(void)\n{\n    int n, l, r, i;\n    long long f[N], pref[N];\n\n    scanf(\"%d%d%d\", &n, &l, &r);\n\n    f[1] = 1;\n    f[2] = 1;\n    for (i = 3; i <= n; i++) {\n        f[i] = f[i - 1] + f[i - 2];\n    }\n\n    pref[0] = 0;\n    for (i = 1; i <= n; i++) {\n        pref[i] = pref[i - 1] + f[i];\n    }\n\n    printf(\"%lld\\n\", pref[n]);              /* 前 n 项之和 */\n    printf(\"%lld\\n\", pref[r] - pref[l - 1]); /* 第 l 项到第 r 项之和 */\n    return 0;\n}\n"
+    },
+    {
+      "id": "F11",
+      "cat": "mix",
+      "title": "约瑟夫环（报数出圈）",
+      "difficulty": 4,
+      "tags": [
+        "数组模拟",
+        "循环",
+        "约瑟夫环"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\nn 个人（编号 1 到 n）围成一圈，从编号 1 的人开始报数，报到 m 的人出圈；然后从出圈者的下一个人重新从 1 开始报数，报到 m 的人再出圈……如此重复，直到圈中只剩一个人为止。\n\n请用数组模拟这个过程：已出圈的人可将其对应数组元素置为 0 作为标记。\n\n### 输入格式\n一行，两个整数 n 和 m（2 ≤ n ≤ 1000，1 ≤ m ≤ 1000）。\n\n### 输出格式\n第一行：按出圈先后顺序输出 n-1 个出圈者的编号，数字之间用一个空格分隔，行末无多余空格。\n第二行：最后剩下的人的编号。",
+      "samples": [
+        {
+          "in": "5 3\n",
+          "out": "3 1 5 2\n4\n"
+        }
+      ],
+      "hint": "用数组 `a[1..n]` 存放每人的编号，出圈后置 0；用一个下标在数组中循环前进，跳过为 0 的位置，报数到 m 时输出该编号并将其置 0、报数重置为 0。",
+      "pitfalls": "报数只对尚未出圈的人进行；下标走到 n 之后要回到 1。循环在只剩 1 人时结束，最后单独输出幸存者的编号。",
+      "solution": "#include <stdio.h>\n\n#define N 1005\n\nint main(void)\n{\n    int n, m, i, remain, idx, count, first = 1, survivor = 0;\n    int a[N];\n\n    scanf(\"%d%d\", &n, &m);\n    for (i = 1; i <= n; i++) {\n        a[i] = i;\n    }\n\n    remain = n;\n    idx = 1;\n    count = 0;\n    while (remain > 1) {\n        if (a[idx] != 0) {              /* 0 表示已经出圈 */\n            count++;\n            if (count == m) {\n                if (!first) {\n                    printf(\" \");\n                }\n                printf(\"%d\", a[idx]);\n                first = 0;\n                a[idx] = 0;\n                count = 0;\n                remain--;\n            }\n        }\n        idx = idx % n + 1;              /* 移到下一个人，n 之后回到 1 */\n    }\n    for (i = 1; i <= n; i++) {\n        if (a[i] != 0) {\n            survivor = a[i];\n            break;\n        }\n    }\n    printf(\"\\n%d\\n\", survivor);\n    return 0;\n}\n"
+    },
+    {
+      "id": "F12",
+      "cat": "mix",
+      "title": "长度不超过 k 的最大子段和",
+      "difficulty": 4,
+      "tags": [
+        "前缀和",
+        "枚举",
+        "子段和"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n给定一个长度为 n 的整数数组（元素可能为负）和一个整数 k，请找出一段**连续子数组**，要求其长度不超过 k（至少包含 1 个元素），并且这段元素之和尽可能大。\n\n### 输入格式\n第一行两个整数 n 和 k（1 ≤ n ≤ 1000，1 ≤ k ≤ n）。\n第二行 n 个用空格分隔的整数 a[i]（-10^4 ≤ a[i] ≤ 10^4）。\n\n### 输出格式\n一行，一个整数，表示满足条件的最大连续子段和（子段长度至少为 1）。",
+      "samples": [
+        {
+          "in": "8 3\n-2 1 -3 4 -1 2 1 -5\n",
+          "out": "5\n"
+        },
+        {
+          "in": "5 5\n-3 -1 -2 -4 -5\n",
+          "out": "-1\n"
+        }
+      ],
+      "hint": "先求前缀和数组，然后枚举子段的右端点 i 和长度 j（1 ≤ j ≤ min(k, i)），子段和为 `pref[i] - pref[i-j]`，在其中取最大值，复杂度 O(nk)。",
+      "pitfalls": "结果可能为负数（全为负数时取最大的单个元素），所以最大值不能初始化为 0；子段长度必须至少为 1。",
+      "solution": "#include <stdio.h>\n\n#define N 1005\n\nint main(void)\n{\n    int n, k, i, j, maxlen;\n    long long a[N], pref[N];\n    long long best = 0, sum;\n    int has = 0;\n\n    scanf(\"%d%d\", &n, &k);\n    for (i = 1; i <= n; i++) {\n        scanf(\"%lld\", &a[i]);\n    }\n\n    pref[0] = 0;\n    for (i = 1; i <= n; i++) {\n        pref[i] = pref[i - 1] + a[i];\n    }\n\n    for (i = 1; i <= n; i++) {              /* 枚举子段右端点 i */\n        maxlen = (i < k) ? i : k;           /* 长度不超过 k，也不超过 i */\n        for (j = 1; j <= maxlen; j++) {     /* 枚举长度 j */\n            sum = pref[i] - pref[i - j];\n            if (!has || sum > best) {\n                best = sum;\n                has = 1;\n            }\n        }\n    }\n\n    printf(\"%lld\\n\", best);\n    return 0;\n}\n"
+    },
+    {
+      "id": "F13",
+      "cat": "mix",
+      "title": "螺旋矩阵的填充与输出",
+      "difficulty": 5,
+      "tags": [
+        "二维数组",
+        "边界控制",
+        "螺旋矩阵"
+      ],
+      "source": "新编",
+      "desc": "### 题目描述\n输入一个正整数 n，构造一个 n×n 的矩阵，并按顺时针螺旋的方式从左上角开始依次填入 1、2、3、…、n²。\n\n螺旋的走法：从 `a[0][0]` 出发先向右走，遇到矩阵边界或者已经填过的格子就顺时针转 90 度（顺序为右 → 下 → 左 → 上），直到 n² 个数全部填完。\n\n填完后按行输出整个矩阵。\n\n### 输入格式\n一行，一个整数 n（1 ≤ n ≤ 50）。\n\n### 输出格式\n输出 n 行，每行 n 个整数，为填好的矩阵；相邻数字之间用一个空格分隔，每行行末无多余空格并换行。",
+      "samples": [
+        {
+          "in": "4\n",
+          "out": "1 2 3 4\n12 13 14 5\n11 16 15 6\n10 9 8 7\n"
+        },
+        {
+          "in": "1\n",
+          "out": "1\n"
+        }
+      ],
+      "hint": "维护四个边界 `top`、`bottom`、`left`、`right`，按「从左到右、从上到下、从右到左、从下到上」的顺序填数，每填完一条边就收缩对应边界。",
+      "pitfalls": "n 为奇数时中心只剩一个格子，不要重复填。填完上边、下边之后要分别判断 `top <= bottom` 和 `left <= right`，否则最后只剩一行或一列时会覆盖已填好的数。",
+      "solution": "#include <stdio.h>\n\n#define N 55\n\nint main(void)\n{\n    int n, i, j, val = 1;\n    int top, bottom, left, right;\n    int a[N][N];\n\n    scanf(\"%d\", &n);\n    top = 0;\n    bottom = n - 1;\n    left = 0;\n    right = n - 1;\n\n    while (top <= bottom && left <= right) {\n        for (j = left; j <= right; j++) {          /* 从左到右 */\n            a[top][j] = val++;\n        }\n        top++;\n        for (i = top; i <= bottom; i++) {          /* 从上到下 */\n            a[i][right] = val++;\n        }\n        right--;\n        if (top <= bottom) {                       /* 从右到左 */\n            for (j = right; j >= left; j--) {\n                a[bottom][j] = val++;\n            }\n            bottom--;\n        }\n        if (left <= right) {                       /* 从下到上 */\n            for (i = bottom; i >= top; i--) {\n                a[i][left] = val++;\n            }\n            left++;\n        }\n    }\n\n    for (i = 0; i < n; i++) {\n        for (j = 0; j < n; j++) {\n            if (j > 0) {\n                printf(\" \");\n            }\n            printf(\"%d\", a[i][j]);\n        }\n        printf(\"\\n\");\n    }\n    return 0;\n}\n"
+    }
+  ]
+}
